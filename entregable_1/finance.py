@@ -102,5 +102,3 @@ if __name__ == "__main__":
         print("Cargando datos en Redshift...")
         load_data(transformed_data)
         print("Datos cargados exitosamente.")
-
-
