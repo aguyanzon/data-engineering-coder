@@ -57,20 +57,18 @@ def load_data(data):
 
     # Crea la tabla en el esquema especificado
     create_table_query = f'''
-        CREATE TABLE {esquema}.{tabla} (
-            "date" DATE,
+        CREATE TABLE IF NOT EXISTS {esquema}.{tabla} (
+            "date" DATE distkey,
             "open" VARCHAR(255),
             high VARCHAR(255),
             low VARCHAR(255),
             close VARCHAR(255), 
             volume VARCHAR(255),
             symbol VARCHAR(255)
-        )
+        ) sortkey(date);
     '''
-    drop_table_query = f'DROP TABLE IF EXISTS {esquema}.{tabla}'
 
     with conn.cursor() as cursor:
-        cursor.execute(drop_table_query)
         print(f"Creando tabla {tabla}")
         cursor.execute(create_table_query)
         for index, row in data.iterrows():
