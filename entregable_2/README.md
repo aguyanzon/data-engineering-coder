@@ -8,10 +8,10 @@ Para el siguiente trabajo se extrajeron los datos de
 
 La extracción se realizó vía API y se tomaron los valores mensuales (último día de negociación de cada mes, apertura mensual, máximo mensual, mínimo mensual, cierre mensual, volumen mensual) de las acciones de IBM (IBM), APPLE (AAPL) y TESLA (TSLA), que cubre más de 20 años de datos históricos.
 
-En la entrega anterior, los datos fueron cargados a Redshift mediante Pandas. Para este segundo entregable se optó por utlizar Spark para la carga de datos. A su vez se verifica si existen datos duplicados en la tabla.
+En la entrega anterior, los datos fueron cargados a Redshift mediante Pandas. Para este segundo entregable se optó por utlizar Spark para la carga de datos. A su vez se agrega distkey y sortkey a la tabla y se verifica si existen datos duplicados.
 
 Para poder ejecutar el siguiente trabajo se optó por disponiblizar dos métodos. El primero consiste en un Jupyter Notebook y el segundo un script .py.
-En primer lugar se debe crear un archivo .env en la carpeta docker_shared_folder/working_dir que contenga los siguientes parámetros:
+En primer lugar se debe crear un archivo .env en la carpeta docker_shared_folder/working_dir/ que contenga los siguientes parámetros:
 ```
 AWS_REDSHIFT_USER=
 AWS_REDSHIFT_PASSWORD=
