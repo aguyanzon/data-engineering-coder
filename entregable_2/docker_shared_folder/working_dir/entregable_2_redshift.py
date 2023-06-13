@@ -37,8 +37,9 @@ def transform_data(data):
     else:
         print("El DataFrame tiene duplicados.")
 
+    return data
+
 def load_data(data):
-    env = os.environ
 
     # Connect to Redshift using psycopg2
     conn = psycopg2.connect(
@@ -48,6 +49,7 @@ def load_data(data):
         user=env['AWS_REDSHIFT_USER'],
         password=env['AWS_REDSHIFT_PASSWORD']
     )
+    print("Conexión a Redshift creada con éxito")
 
     cursor = conn.cursor()
     cursor.execute(f'''
@@ -81,6 +83,8 @@ if __name__ == "__main__":
 
     os.environ['PYSPARK_SUBMIT_ARGS'] = f'--driver-class-path {driver_path} --jars {driver_path} pyspark-shell'
     os.environ['SPARK_CLASSPATH'] = driver_path
+
+    env = os.environ
 
     # Create SparkSession 
     spark = SparkSession.builder \

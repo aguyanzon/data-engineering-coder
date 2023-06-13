@@ -37,8 +37,5 @@ Por el contrario, si se decida ejecutar el archivo entregable_2_redshift.py desd
 docker-compose exec pyspark bash
 ```
 ```
-source /home/coder/working_dir/venv/bin/activate
-```
-```
 python /home/coder/working_dir/entregable_2_redshift.py
 ```

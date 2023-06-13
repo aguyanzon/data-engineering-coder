@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - REQUIREMENTS_FILE=requirements.txt
     container_name: entregable2-pyspark
     ports:
       - "10003:8888"
