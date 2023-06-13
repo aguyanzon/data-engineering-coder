@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  pyspark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: entregable2-pyspark
+    ports:
+      - "10003:8888"
+    volumes:
+      - ./docker_shared_folder/working_dir:/home/coder/working_dir
+      - ./docker_shared_folder/working_dir/scripts:/home/coder/working_dir/scripts
+      - ./docker_shared_folder/working_dir/venv:/home/coder/working_dir/venv
+    user: root
+    working_dir: /home/coder/working_dir
+    environment:
+      JUPYTER_ENABLE_LAB: '1' 
+      JUPYTER_TOKEN: 'coder'
+      NB_USER: coder
+      NB_GID: 1000
+      CHOWN_HOME: 'yes'
+      CHOWN_HOME_OPTS: '-R'
+      SPARK_CLASSPATH: '/home/coder/working_dir/driver_jdbc/postgresql-42.2.27.jre7.jar'
+    env_file:
+      - ./docker_shared_folder/working_dir/.env
+    networks:
+      ent_2_net:
+        ipv4_address: 172.6.6.1
+
+networks:
+  ent_2_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.6.6.0/16
