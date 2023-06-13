@@ -10,8 +10,11 @@ RUN apt-get update && \
 RUN python3 -m venv /home/coder/working_dir/venv
 ENV PATH="/home/coder/working_dir/venv/bin:$PATH"
 
+# Copiar el archivo requirements.txt al contenedor
+COPY requirements.txt /home/coder/working_dir/requirements.txt
+
 # Instalar las dependencias dentro del entorno virtual
-RUN /home/coder/working_dir/venv/bin/pip install --no-cache-dir -r /home/coder/working_dir/requirements.txt
+RUN /home/coder/working_dir/venv/bin/pip3 install --no-cache-dir -r /home/coder/working_dir/requirements.txt
 
 # Cambiar al usuario 'coder'
 USER coder

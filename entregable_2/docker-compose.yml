@@ -10,7 +10,6 @@ services:
       - "10003:8888"
     volumes:
       - ./docker_shared_folder/working_dir:/home/coder/working_dir
-      - ./docker_shared_folder/working_dir/scripts:/home/coder/working_dir/scripts
       - ./docker_shared_folder/working_dir/venv:/home/coder/working_dir/venv
     user: root
     working_dir: /home/coder/working_dir
