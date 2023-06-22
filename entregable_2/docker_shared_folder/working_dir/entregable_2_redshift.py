@@ -3,7 +3,8 @@ import psycopg2
 import requests
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import when, lit, col
+from pyspark.sql.functions import when, lit, col, max, lag
+from pyspark.sql.window import Window
 
 def extract_data(symbol):
     try:
@@ -36,6 +37,9 @@ def transform_data(data):
         print("El DataFrame no tiene duplicados.")
     else:
         print("El DataFrame tiene duplicados.")
+
+    window_spec = Window.partitionBy('symbol').orderBy('date_from')
+    data = data.withColumn('monthly variation (%)', (col('`4. close`') - lag('`4. close`').over(window_spec)) / lag('`4. close`').over(window_spec) * 100)
 
     return data
 
