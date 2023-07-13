@@ -12,18 +12,17 @@ from airflow.models import Variable
 from datetime import datetime, timedelta
 from os import environ as env
 
-# Variables de configuración de Redshift
-REDSHIFT_SCHEMA = env['REDSHIFT_SCHEMA']
 
 QUERY_CREATE_TABLE = '''
-CREATE TABLE IF NOT EXISTS finance (
-    "date_from" VARCHAR(10),
-    "1. open" VARCHAR(10),
-    "2. high" VARCHAR(10),
-    "3. low" VARCHAR(10),
-    "4. close" VARCHAR(10), 
-    "5. volume" VARCHAR(10),
-    symbol VARCHAR(10) distkey
+CREATE TABLE IF NOT EXISTS finance_spark (
+    "date_from" VARCHAR(30),
+    "1. open" VARCHAR(30),
+    "2. high" VARCHAR(30),
+    "3. low" VARCHAR(30),
+    "4. close" VARCHAR(30), 
+    "5. volume" VARCHAR(30),
+    "monthly variation (%)" VARCHAR(30),
+    symbol VARCHAR(30) distkey
 ) sortkey(date_from);
 '''
 

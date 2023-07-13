@@ -8,7 +8,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
 from pyspark.sql.functions import concat, col, lit, when, expr, to_date, max, lag
 
-
 from commons import ETL_Spark
 
 class ETL_Finance(ETL_Spark):
@@ -17,8 +16,7 @@ class ETL_Finance(ETL_Spark):
         self.process_date = datetime.now().strftime("%Y-%m-%d")
 
     def run(self):
-        process_date = datetime.now().strftime("%Y-%m-%d")
-        self.execute(process_date)
+        self.execute()
 
     def extract(self, symbol):
         """
@@ -85,13 +83,10 @@ class ETL_Finance(ETL_Spark):
         """
         print(">>> [L] Cargando datos en Redshift...")
 
-        # add process_date column
-        df_final = df_final.withColumn("process_date", lit(self.process_date))
-
         df_final.write \
             .format("jdbc") \
             .option("url", env['REDSHIFT_URL']) \
-            .option("dbtable", f"{env['REDSHIFT_SCHEMA']}.finance") \
+            .option("dbtable", f"{env['REDSHIFT_SCHEMA']}.finance_spark") \
             .option("user", env['REDSHIFT_USER']) \
             .option("password", env['REDSHIFT_PASSWORD']) \
             .option("driver", "org.postgresql.Driver") \
