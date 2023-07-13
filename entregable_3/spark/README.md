@@ -1,5 +1,5 @@
-# Ejemplo de Entregable 3
-Este es un ejemplo de entregable 3, el cual se puede utilizar como guía para la entrega del mismo. Está desarrollado con Spark como framework de ETL, pero se puede adaptar a Pandas ya que este es más sencillo.
+# Entregable 3
+El script de la segunda entrega debe correr en un container de Docker y estará embebido en un DAG de Airflow dentro del container.
 
 # Distribución de los archivos
 Los archivos a tener en cuenta son:
@@ -7,17 +7,17 @@ Los archivos a tener en cuenta son:
 * `docker-compose.yml`: Archivo de configuración de Docker Compose. Contiene la configuración de los servicios de Airflow y Spark.
 * `.env`: Archivo de variables de entorno. Contiene variables de conexión a Redshift y driver de Postgres.
 * `dags/`: Carpeta con los archivos de los DAGs.
-    * `etl_users.py`: DAG principal que ejecuta el pipeline de extracción, transformación y carga de datos de usuarios.
+    * `etl_finance.py`: DAG principal que ejecuta el pipeline de extracción, transformación y carga de datos de usuarios.
 * `logs/`: Carpeta con los archivos de logs de Airflow.
 * `plugins/`: Carpeta con los plugins de Airflow.
 * `postgres_data/`: Carpeta con los datos de Postgres.
 * `scripts/`: Carpeta con los scripts de Spark.
     * `postgresql-42.5.2.jar`: Driver de Postgres para Spark.
     * `common.py`: Script de Spark con funciones comunes.
-    * `ETL_Users.py`: Script de Spark que ejecuta el ETL.
+    * `ETL_Finance.py`: Script de Spark que ejecuta el ETL.
 
 # Pasos para ejecutar el ejemplo
-1. Posicionarse en la carpeta `otros/ejemplo_entregable_3`. A esta altura debería ver el archivo `docker-compose.yml`.
+1. Posicionarse en la carpeta `entregable_3/spark`. A esta altura debería ver el archivo `docker-compose.yml`.
 2. Crear las siguientes carpetas a la misma altura del `docker-compose.yml`.
 ```bash
 mkdir -p dags,logs,plugins,postgres_data,scripts
@@ -30,6 +30,7 @@ REDSHIFT_DB=...
 REDSHIFT_USER=...
 REDSHIFT_SCHEMA=...
 REDSHIFT_PASSWORD=...
+API_KEY=...
 REDSHIFT_URL="jdbc:postgresql://${REDSHIFT_HOST}:${REDSHIFT_PORT}/${REDSHIFT_DB}?user=${REDSHIFT_USER}&password=${REDSHIFT_PASSWORD}"
 DRIVER_PATH=/tmp/drivers/postgresql-42.5.2.jar
 ```
@@ -39,6 +40,11 @@ docker-compose pull lucastrubiano/airflow:airflow_2_6_2
 docker-compose pull lucastrubiano/spark:spark_3_4_1
 ```
 5. Las imagenes fueron generadas a partir de los Dockerfiles ubicados en `docker_images/`. Si se desea generar las imagenes nuevamente, ejecutar los comandos que están en los Dockerfiles.
+
+**En mi caso tengo una Mac con Chip M1 la cual generaba inconvenientes con la arquitectura en Java, para ello tuve que agregar la siguiente variable de entorno en el docker-compose en `airflow-common-env`:**
+```
+JAVA_HOME: /usr/lib/jvm/java-11-openjdk-arm64/
+```
 6. Ejecutar el siguiente comando para levantar los servicios de Airflow y Spark.
 ```bash
 docker-compose up --build
