@@ -1,10 +1,6 @@
-# Este es el DAG que orquesta el ETL de la tabla users
-import sys
-sys.path.append('/opt/airflow/scripts/')
-import modules
-
 from airflow import DAG
 
+from airflow.operators.bash import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
@@ -26,24 +22,9 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    task_1 = PythonOperator(
-        task_id='extraer_data',
-        python_callable=modules.union_data,
-        dag=dag,
+    etl = BashOperator(
+        task_id="ETL_Pandas",
+        bash_command="python /opt/airflow/scripts/modules.py",
     )
 
-    task_2 = PythonOperator(
-        task_id='transformar_data',
-        python_callable=modules.transform,
-        op_args=[task_1.output],
-        dag=dag,
-    )
-
-    task_3 = PythonOperator(
-        task_id='cargar_data',
-        python_callable=modules.load,
-        op_args=[task_2.output],
-        dag=dag,
-    )
-
-    task_1 >> task_2 >> task_3
+    etl
