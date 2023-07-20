@@ -1,6 +1,12 @@
 # Entregable 3
 El script de la segunda entrega debe correr en un container de Docker y estará embebido en un DAG de Airflow dentro del container.
 
+# Desarrollo 
+Para el siguiente trabajo se extrajeron los datos de
+[Alpha Vantage](https://www.alphavantage.co/) que proporciona datos del mercado financiero de nivel empresarial. Para poder acceder a los datos es necesario generar una API_KEY que proporciona la página de manera gratuita.
+
+La extracción se realizó vía API y se tomaron los valores mensuales (último día de negociación de cada mes, apertura mensual, máximo mensual, mínimo mensual, cierre mensual, volumen mensual) de las acciones de IBM (IBM), APPLE (AAPL) y TESLA (TSLA), que cubre más de 20 años de datos históricos.
+
 # Distribución de los archivos
 Los archivos a tener en cuenta son:
 * `docker_images/`: Contiene los Dockerfiles para crear las imagenes utilizadas de Airflow y Spark.
