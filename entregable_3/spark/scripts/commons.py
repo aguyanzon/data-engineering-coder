@@ -55,7 +55,7 @@ class ETL_Spark:
         except:
             print(">>> [init] No se pudo conectar a Redshift")
 
-    def execute(self):
+    def execute(self, process_date: str):
         """
         Método principal que ejecuta el ETL
 

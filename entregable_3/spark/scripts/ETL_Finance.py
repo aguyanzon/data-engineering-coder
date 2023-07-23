@@ -16,7 +16,8 @@ class ETL_Finance(ETL_Spark):
         self.process_date = datetime.now().strftime("%Y-%m-%d")
 
     def run(self):
-        self.execute()
+        process_date = datetime.now().strftime("%Y-%m-%d")
+        self.execute(process_date)
 
     def extract(self, symbol):
         """
@@ -82,6 +83,8 @@ class ETL_Finance(ETL_Spark):
         """
         print(">>> [L] Cargando datos en Redshift...")
 
+        df_final = df_final.withColumn("process_date", lit(self.process_date))
+        
         df_final.write \
             .format("jdbc") \
             .option("url", env['REDSHIFT_URL']) \

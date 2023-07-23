@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS finance_spark (
     "close" VARCHAR(30), 
     "volume" VARCHAR(30),
     "monthly variation" VARCHAR(30),
+    process_date VARCHAR(10),
     symbol VARCHAR(30) distkey
 ) sortkey(date_from);
 '''
