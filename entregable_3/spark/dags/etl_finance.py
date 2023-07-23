@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS finance_spark (
     symbol VARCHAR(30) distkey
 ) sortkey(date_from);
 '''
+
 QUERY_CLEAN_PROCESS_DATE = """
 DELETE FROM finance_spark WHERE process_date = '{{ ti.xcom_pull(key="process_date") }}';
 """
