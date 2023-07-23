@@ -16,12 +16,12 @@ from os import environ as env
 QUERY_CREATE_TABLE = '''
 CREATE TABLE IF NOT EXISTS finance_spark (
     "date_from" VARCHAR(30),
-    "1. open" VARCHAR(30),
-    "2. high" VARCHAR(30),
-    "3. low" VARCHAR(30),
-    "4. close" VARCHAR(30), 
-    "5. volume" VARCHAR(30),
-    "monthly variation (%)" VARCHAR(30),
+    "open" VARCHAR(30),
+    "high" VARCHAR(30),
+    "low" VARCHAR(30),
+    "close" VARCHAR(30), 
+    "volume" VARCHAR(30),
+    "monthly variation" VARCHAR(30),
     symbol VARCHAR(30) distkey
 ) sortkey(date_from);
 '''

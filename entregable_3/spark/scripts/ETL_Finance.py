@@ -27,15 +27,14 @@ class ETL_Finance(ETL_Spark):
         try:
             url = f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={env["API_KEY"]}'
             response = requests.get(url)
-            json_data = response.json()
+            json_data = response.json()["Monthly Time Series"]
 
-            data_list = []
-            for date, values_dict in json_data["Monthly Time Series"].items():
-                data = (date, values_dict["1. open"], values_dict["2. high"], values_dict["3. low"], values_dict["4. close"], values_dict["5. volume"])
-                data_list.append(data)
+            # Convertir el diccionario en una lista de tuplas (date_from, open, high, low, close, volume)
+            data_list = [(date, values["1. open"], values["2. high"], values["3. low"],
+             values["4. close"], values["5. volume"]) for date, values in json_data.items()]
 
             # Crear el DataFrame con todos los datos
-            df = self.spark.createDataFrame(data_list, ["date_from", "1. open", "2. high", "3. low", "4. close", "5. volume"])
+            df = self.spark.createDataFrame(data_list, ["date_from", "open", "high", "low", "close", "volume"])
             df = df.withColumn("symbol", lit(symbol))
 
             return df
@@ -72,7 +71,7 @@ class ETL_Finance(ETL_Spark):
             print("El DataFrame tiene duplicados.")
 
         window_spec = Window.partitionBy('symbol').orderBy('date_from')
-        df_original = df_original.withColumn('monthly variation (%)', (col('`4. close`') - lag('`4. close`').over(window_spec)) / lag('`4. close`').over(window_spec) * 100)
+        df_original = df_original.withColumn('monthly variation', (col('close') - lag('close').over(window_spec)) / lag('close').over(window_spec) * 100)
 
         return df_original
 
